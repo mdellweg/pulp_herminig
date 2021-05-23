@@ -1,0 +1,45 @@
+# This config represents the latest values used when running the plugin-template. Any settings that
+# were not present before running plugin-template have been added with their default values.
+
+additional_repos: []
+black: true
+check_commit_message: true
+check_gettext: true
+check_manifest: true
+check_openapi_schema: true
+check_stray_pulpcore_imports: true
+coverage: false
+deploy_client_to_pypi: false
+deploy_client_to_rubygems: false
+deploy_daily_client_to_pypi: false
+deploy_daily_client_to_rubygems: false
+deploy_to_pypi: false
+docker_fixtures: false
+docs_test: false
+issue_tracker: github
+plugin_app_label: herminig
+plugin_camel: PulpHerminig
+plugin_camel_short: Herminig
+plugin_caps: PULP_HERMINIG
+plugin_caps_short: HERMINIG
+plugin_dash: pulp-herminig
+plugin_dash_short: herminig
+plugin_default_branch: master
+plugin_name: pulp_herminig
+plugin_snake: pulp_herminig
+publish_docs_to_pulpprojectdotorg: false
+pulp_settings: null
+pulpcore_branch: master
+pulpcore_pip_version_specifier: null
+pulpprojectdotorg_key_id: null
+pydocstyle: true
+pypi_username: null
+redmine_project: null
+test_bindings: false
+test_cli: false
+test_performance: false
+test_released_plugin_with_next_pulpcore_release: false
+test_s3: false
+update_redmine: false
+upgrade_range: []
+
