@@ -3,13 +3,8 @@ from functools import partial
 from unittest import SkipTest
 
 from pulp_smash import config, selectors
-from pulp_smash.pulp3.utils import (
-    require_pulp_3,
-    require_pulp_plugins,
-)
-
+from pulp_smash.pulp3.utils import require_pulp_3, require_pulp_plugins
 from pulpcore.client.pulp_herminig import ApiClient as HerminigApiClient
-
 
 cfg = config.get_config()
 configuration = cfg.get_bindings_config()

@@ -1,1 +1,1 @@
-from .benchmark import benchmark_tasking, noop  # noqa
+from .benchmark import noop, sleep  # noqa
