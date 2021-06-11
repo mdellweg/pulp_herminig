@@ -1,14 +1,58 @@
 from gettext import gettext as _
 
 from pulpcore.plugin.serializers import RelatedField
-from rest_framework.serializers import BooleanField, IntegerField, Serializer, ValidationError
+from rest_framework.serializers import (
+    BooleanField,
+    FloatField,
+    IntegerField,
+    Serializer,
+    ValidationError
+)
 
 
 class TaskingBenchmarkSerializer(Serializer):
-    truncate_tasks = BooleanField(default=False)
-    count = IntegerField(default=4)
-    resources_N = IntegerField(default=0)
-    resources_K = IntegerField(default=0)
+    truncate_tasks = BooleanField(
+        default=False,
+        help_text = _(
+            "If True, this will delete all final tasks from the database before dispatching."
+        ),
+    )
+    count = IntegerField(
+        default=4,
+        min_value=1,
+        help_text = _(
+            "The number of tasks to dispatch."
+        ),
+    )
+    resources_N = IntegerField(
+        default=0,
+        min_value=0,
+        help_text=_(
+            "The number of unique resources these tasks could require."
+        ),
+    )
+    resources_K = IntegerField(
+        default=0,
+        min_value=0,
+        help_text=_(
+            "Randomly select K of the N resources for each task to require."
+        ),
+    )
+    sleep_secs = FloatField(
+        default=0.0,
+        min_value=0.0,
+        help_text=_(
+            "The amount of time in seconds each task should sleep for."
+        ),
+    )
+    failure_probability = FloatField(
+        default=0.0,
+        min_value=0.0,
+        max_value=1.0,
+        help_text=_(
+            "The probability that the task will fail."
+        ),
+    )
 
     def validate(self, data):
         validated_data = super().validate(data)

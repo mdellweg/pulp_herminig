@@ -26,22 +26,31 @@ class TaskingBenchmarkView(APIView):
         count = serializer.validated_data["count"]
         resources = [f"herminig_{i}" for i in range(serializer.validated_data["resources_N"])]
         resources_K = serializer.validated_data["resources_K"]
+        sleep_secs = serializer.validated_data["sleep_secs"]
+        failure_probability = serializer.validated_data["failure_probability"]
+
         # Define the state of the tasking table before starting
         if truncate_tasks:
             Task.objects.filter(state__in=TASK_FINAL_STATES).delete()
         prior_tasks = Task.objects.count()
+
         # create a task_group to collect all tasks for this run
         task_group = TaskGroup(description="Tasking system benchmark tasks")
         task_group.save()
-        # start the test
+
+        # dispatch the tasks
         before = time.perf_counter_ns()
         for i in range(count):
-            dispatch(tasks.noop, random.choices(resources, k=resources_K), task_group=task_group)
+            dispatch(
+                tasks.test_task,
+                random.choices(resources, k=resources_K),
+                task_group=task_group,
+                args=(sleep_secs, failure_probability)
+            )
         after = time.perf_counter_ns()
         task_group.finish()
-        # --------------
-        # Collect and return results
 
+        # Collect and return results
         benchmark_result = models.TaskingBenchmarkResult(
             count, after - before, prior_tasks, task_group
         )
