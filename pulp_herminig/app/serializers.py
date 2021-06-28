@@ -24,14 +24,14 @@ class TaskingBenchmarkSerializer(Serializer):
             "The number of tasks to dispatch."
         ),
     )
-    resources_N = IntegerField(
+    resources_n = IntegerField(
         default=0,
         min_value=0,
         help_text=_(
             "The number of unique resources these tasks could require."
         ),
     )
-    resources_K = IntegerField(
+    resources_k = IntegerField(
         default=0,
         min_value=0,
         help_text=_(
@@ -56,8 +56,8 @@ class TaskingBenchmarkSerializer(Serializer):
 
     def validate(self, data):
         validated_data = super().validate(data)
-        if validated_data["resources_K"] > validated_data["resources_N"]:
-            raise ValidationError("'resources_K cannot be greater than 'resources_N'.")
+        if validated_data["resources_k"] > validated_data["resources_n"]:
+            raise ValidationError("'resources_k cannot be greater than 'resources_n'.")
         return validated_data
 
 

@@ -24,8 +24,8 @@ class TaskingBenchmarkView(APIView):
         serializer.is_valid(raise_exception=True)
         truncate_tasks = serializer.validated_data["truncate_tasks"]
         count = serializer.validated_data["count"]
-        resources = [f"herminig_{i}" for i in range(serializer.validated_data["resources_N"])]
-        resources_K = serializer.validated_data["resources_K"]
+        resources = [f"herminig_{i}" for i in range(serializer.validated_data["resources_n"])]
+        resources_k = serializer.validated_data["resources_k"]
         sleep_secs = serializer.validated_data["sleep_secs"]
         failure_probability = serializer.validated_data["failure_probability"]
 
@@ -43,7 +43,7 @@ class TaskingBenchmarkView(APIView):
         for i in range(count):
             dispatch(
                 tasks.test_task,
-                random.choices(resources, k=resources_K),
+                random.choices(resources, k=resources_k),
                 task_group=task_group,
                 args=(sleep_secs, failure_probability)
             )
