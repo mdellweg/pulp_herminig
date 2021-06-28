@@ -43,7 +43,7 @@ class TaskingBenchmarkView(APIView):
         for i in range(count):
             dispatch(
                 tasks.test_task,
-                random.choices(resources, k=resources_k),
+                random.sample(resources, k=resources_k),
                 task_group=task_group,
                 args=(sleep_secs, failure_probability)
             )
