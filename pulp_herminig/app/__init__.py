@@ -7,3 +7,4 @@ class PulpHerminigPluginAppConfig(PulpPluginAppConfig):
     name = "pulp_herminig.app"
     label = "herminig"
     version = "0.1.0a1.dev"
+    python_package_name = "pulp_herminig"
