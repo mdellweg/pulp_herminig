@@ -10,6 +10,32 @@ from rest_framework.serializers import (
 )
 
 
+class TaskingTestSerializer(Serializer):
+    count = IntegerField(
+        default=4,
+        min_value=1,
+        help_text = _(
+            "The number of tasks to dispatch."
+        ),
+    )
+    sleep_secs = FloatField(
+        default=0.0,
+        min_value=0.0,
+        help_text=_(
+            "The amount of time in seconds each task should sleep for."
+        ),
+    )
+
+
+class TaskingTestResultSerializer(Serializer):
+    count = IntegerField(read_only=True)
+    task_group = RelatedField(
+        help_text=_("The task group that contains the dispatched tasks."),
+        read_only=True,
+        view_name="task-groups-detail",
+    )
+
+
 class TaskingBenchmarkSerializer(Serializer):
     truncate_tasks = BooleanField(
         default=False,

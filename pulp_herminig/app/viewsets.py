@@ -11,6 +11,40 @@ from rest_framework.views import APIView
 from . import models, serializers, tasks
 
 
+class TaskingTestView(APIView):
+    @extend_schema(
+        request=serializers.TaskingTestSerializer,
+        description="Benchmark the task queueing.",
+        responses={200: serializers.TaskingTestResultSerializer},
+    )
+    def post(self, request):
+        serializer = serializers.TaskingTestSerializer(
+            data=request.data, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
+        count = serializer.validated_data["count"]
+        sleep_secs = serializer.validated_data["sleep_secs"]
+
+        # create a task_group to collect all tasks for this run
+        task_group = TaskGroup(description="Tasking system test tasks")
+        task_group.save()
+
+        for i in range(count):
+            dispatch(
+                # tasks.sleep_task,
+                tasks.backoff_sleep_task,
+                task_group=task_group,
+                args=(sleep_secs,)
+            )
+
+        # Collect and return results
+        test_result = models.TaskingTestResult(count, task_group)
+        response_serializer = serializers.TaskingTestResultSerializer(
+            test_result, context={"request": request}
+        )
+        return Response(data=response_serializer.data, status=200)
+
+
 class TaskingBenchmarkView(APIView):
     @extend_schema(
         request=serializers.TaskingBenchmarkSerializer,
@@ -42,8 +76,8 @@ class TaskingBenchmarkView(APIView):
         before = time.perf_counter_ns()
         for i in range(count):
             dispatch(
-                tasks.test_task,
-                random.sample(resources, k=resources_k),
+                tasks.benchmark_task,
+                exclusive_resources=random.sample(resources, k=resources_k),
                 task_group=task_group,
                 args=(sleep_secs, failure_probability)
             )

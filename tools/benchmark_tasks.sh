@@ -6,8 +6,8 @@ WORKER="$(pulp status| jq '.online_workers | map(select(.name | startswith("reso
 
 for i in $(seq 1 8)
 do
-  RESULT="$(http post localhost/pulp/api/v3/herminig/tasking_benchmark count="$((2**$i))")"
-  TASK_GROUP_HREF="$(echo $RESULT | jq -r '.task_group')"
+  RESULT="$(http post localhost/pulp/api/v3/herminig/tasking_benchmark count="$((2**i))")"
+  TASK_GROUP_HREF="$(echo "$RESULT" | jq -r '.task_group')"
 
   # Wait for taskgroup to finish
   TASK_GROUP="$(pulp task-group show --href "$TASK_GROUP_HREF")"
