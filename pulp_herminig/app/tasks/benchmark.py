@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 random.seed(0)  # Every time you start Pulp, make the tasking failure pattern randomly deterministic
 
 
-def test_task(sleep_secs, failure_probability):
+def benchmark_task(sleep_secs, failure_probability):
     """
 
     Args:
