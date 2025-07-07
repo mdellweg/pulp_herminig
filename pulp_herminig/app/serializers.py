@@ -6,7 +6,7 @@ from rest_framework.serializers import (
     FloatField,
     IntegerField,
     Serializer,
-    ValidationError
+    ValidationError,
 )
 
 
@@ -14,16 +14,12 @@ class TaskingTestSerializer(Serializer):
     count = IntegerField(
         default=4,
         min_value=1,
-        help_text = _(
-            "The number of tasks to dispatch."
-        ),
+        help_text=_("The number of tasks to dispatch."),
     )
     sleep_secs = FloatField(
         default=0.0,
         min_value=0.0,
-        help_text=_(
-            "The amount of time in seconds each task should sleep for."
-        ),
+        help_text=_("The amount of time in seconds each task should sleep for."),
     )
 
 
@@ -39,45 +35,35 @@ class TaskingTestResultSerializer(Serializer):
 class TaskingBenchmarkSerializer(Serializer):
     truncate_tasks = BooleanField(
         default=False,
-        help_text = _(
+        help_text=_(
             "If True, this will delete all final tasks from the database before dispatching."
         ),
     )
     count = IntegerField(
         default=4,
         min_value=1,
-        help_text = _(
-            "The number of tasks to dispatch."
-        ),
+        help_text=_("The number of tasks to dispatch."),
     )
     resources_n = IntegerField(
         default=0,
         min_value=0,
-        help_text=_(
-            "The number of unique resources these tasks could require."
-        ),
+        help_text=_("The number of unique resources these tasks could require."),
     )
     resources_k = IntegerField(
         default=0,
         min_value=0,
-        help_text=_(
-            "Randomly select K of the N resources for each task to require."
-        ),
+        help_text=_("Randomly select K of the N resources for each task to require."),
     )
     sleep_secs = FloatField(
         default=0.0,
         min_value=0.0,
-        help_text=_(
-            "The amount of time in seconds each task should sleep for."
-        ),
+        help_text=_("The amount of time in seconds each task should sleep for."),
     )
     failure_probability = FloatField(
         default=0.0,
         min_value=0.0,
         max_value=1.0,
-        help_text=_(
-            "The probability that the task will fail."
-        ),
+        help_text=_("The probability that the task will fail."),
     )
 
     def validate(self, data):

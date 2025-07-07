@@ -34,7 +34,7 @@ class TaskingTestView(APIView):
                 # tasks.sleep_task,
                 tasks.backoff_sleep_task,
                 task_group=task_group,
-                args=(sleep_secs,)
+                args=(sleep_secs,),
             )
 
         # Collect and return results
@@ -79,7 +79,7 @@ class TaskingBenchmarkView(APIView):
                 tasks.benchmark_task,
                 exclusive_resources=random.sample(resources, k=resources_k),
                 task_group=task_group,
-                args=(sleep_secs, failure_probability)
+                args=(sleep_secs, failure_probability),
             )
         after = time.perf_counter_ns()
         task_group.finish()

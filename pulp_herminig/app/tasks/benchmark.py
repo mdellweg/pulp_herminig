@@ -20,4 +20,4 @@ def benchmark_task(sleep_secs, failure_probability):
     """
     time.sleep(sleep_secs)
     if random.random() < failure_probability:
-        raise Exception('This task failed')
+        raise Exception("This task failed")

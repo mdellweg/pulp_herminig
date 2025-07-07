@@ -8,3 +8,4 @@ class PulpHerminigPluginAppConfig(PulpPluginAppConfig):
     label = "herminig"
     version = "0.1.0a1.dev"
     python_package_name = "pulp_herminig"
+    domain_compatible = True

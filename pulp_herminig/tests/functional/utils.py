@@ -1,4 +1,5 @@
 """Utilities for tests for the herminig plugin."""
+
 from functools import partial
 from unittest import SkipTest
 
