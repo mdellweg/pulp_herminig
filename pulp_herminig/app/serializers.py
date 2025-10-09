@@ -75,6 +75,8 @@ class TaskingBenchmarkSerializer(Serializer):
 
 class TaskingBenchmarkResultSerializer(Serializer):
     count = IntegerField(read_only=True)
+    resources_n = IntegerField(read_only=True)
+    resources_k = IntegerField(read_only=True)
     dispatch_time = IntegerField(read_only=True)
     prior_tasks = IntegerField(read_only=True)
     task_group = RelatedField(

@@ -58,8 +58,9 @@ class TaskingBenchmarkView(APIView):
         serializer.is_valid(raise_exception=True)
         truncate_tasks = serializer.validated_data["truncate_tasks"]
         count = serializer.validated_data["count"]
-        resources = [f"herminig_{i}" for i in range(serializer.validated_data["resources_n"])]
+        resources_n = serializer.validated_data["resources_n"]
         resources_k = serializer.validated_data["resources_k"]
+        resources = [f"herminig_{i}" for i in range(resources_n)]
         sleep_secs = serializer.validated_data["sleep_secs"]
         failure_probability = serializer.validated_data["failure_probability"]
 
@@ -86,7 +87,12 @@ class TaskingBenchmarkView(APIView):
 
         # Collect and return results
         benchmark_result = models.TaskingBenchmarkResult(
-            count, after - before, prior_tasks, task_group
+            count=count,
+            resources_n=resources_n,
+            resources_k=resources_k,
+            dispatch_time=after - before,
+            prior_tasks=prior_tasks,
+            task_group=task_group,
         )
         response_serializer = serializers.TaskingBenchmarkResultSerializer(
             benchmark_result, context={"request": request}

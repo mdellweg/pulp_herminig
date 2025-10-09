@@ -8,5 +8,5 @@ TaskingTestResult = namedtuple("TaskingBenchmarkResult", ["count", "task_group"]
 
 
 TaskingBenchmarkResult = namedtuple(
-    "TaskingBenchmarkResult", ["count", "dispatch_time", "prior_tasks", "task_group"]
+    "TaskingBenchmarkResult", ["count", "resources_n", "resources_k", "dispatch_time", "prior_tasks", "task_group"]
 )
