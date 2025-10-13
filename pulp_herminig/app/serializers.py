@@ -65,6 +65,10 @@ class TaskingBenchmarkSerializer(Serializer):
         max_value=1.0,
         help_text=_("The probability that the task will fail."),
     )
+    atomic = BooleanField(
+        default=True,
+        help_text=_("If true, dispatch all tasks in a transaction."),
+    )
 
     def validate(self, data):
         validated_data = super().validate(data)

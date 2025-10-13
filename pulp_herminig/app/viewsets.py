@@ -1,6 +1,8 @@
 import random
 import time
+from contextlib import ExitStack
 
+from django.db import transaction
 from drf_spectacular.utils import extend_schema
 from pulpcore.plugin.constants import TASK_FINAL_STATES
 from pulpcore.plugin.models import Task, TaskGroup
@@ -63,6 +65,7 @@ class TaskingBenchmarkView(APIView):
         resources = [f"herminig_{i}" for i in range(resources_n)]
         sleep_secs = serializer.validated_data["sleep_secs"]
         failure_probability = serializer.validated_data["failure_probability"]
+        atomic = serializer.validated_data["atomic"]
 
         # Define the state of the tasking table before starting
         if truncate_tasks:
@@ -73,16 +76,19 @@ class TaskingBenchmarkView(APIView):
         task_group = TaskGroup(description="Tasking system benchmark tasks")
         task_group.save()
 
-        # dispatch the tasks
-        before = time.perf_counter_ns()
-        for i in range(count):
-            dispatch(
-                tasks.benchmark_task,
-                exclusive_resources=random.sample(resources, k=resources_k),
-                task_group=task_group,
-                args=(sleep_secs, failure_probability),
-            )
-        after = time.perf_counter_ns()
+        with ExitStack() as exitstack:
+            if atomic:
+                exitstack.enter_context(transaction.atomic())
+            # dispatch the tasks
+            before = time.perf_counter_ns()
+            for i in range(count):
+                dispatch(
+                    tasks.benchmark_task,
+                    exclusive_resources=random.sample(resources, k=resources_k),
+                    task_group=task_group,
+                    args=(sleep_secs, failure_probability),
+                )
+            after = time.perf_counter_ns()
         task_group.finish()
 
         # Collect and return results
